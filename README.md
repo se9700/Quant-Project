@@ -152,8 +152,7 @@ python forecast.py --universe sp500 --device cuda   # scaled-up run on a GPU
 ```
 
 GPU usage and a GPU-optimization playbook (RunPod) are in
-[GPU.md](GPU.md). Honest note: the GPU only earns its keep on the scaled-up
-(`--universe sp500`, bigger model) configuration; on 30 names CPU is fine.
+[GPU.md](GPU.md).
 
 **Forward dividends — VAR** (`forecast_dividends.py`). A vector
 autoregression is fit on the log trailing-12-month DPS of dividend-paying
@@ -178,7 +177,7 @@ Outputs: `reports/forecast_returns_metrics.csv`,
 - The performance comparison starts only when the meta-model has enough
   resolved history to trade ("live evaluation window").
 
-## Known limitations (be upfront about these when presenting)
+## Known limitations
 
 - **Survivorship bias**: the universe is today's large caps applied to history.
 - **Fundamentals depth**: yfinance exposes only ~4–5 years of quarterly
