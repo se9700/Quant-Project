@@ -1,0 +1,29 @@
+# --- personal / sensitive ---
+# portfolio.csv holds your real holdings; commit portfolio.example.csv instead
+portfolio.csv
+# machine-local Claude Code settings
+.claude/
+
+# --- generated / regenerable ---
+# downloaded yfinance data (re-fetched on demand)
+data/cache/
+# generated CSVs and PNGs (docs/ holds the showcase images)
+reports/
+
+# --- python ---
+__pycache__/
+*.py[cod]
+*.egg-info/
+.ipynb_checkpoints/
+
+# --- environments ---
+.venv/
+venv/
+env/
+.env
+
+# --- os / editor ---
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

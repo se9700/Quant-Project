@@ -1,0 +1,86 @@
+# Universe: ~30 large-cap US equities across sectors.
+# NOTE: this is today's watchlist applied to history => survivorship bias.
+# Acceptable for a methodology showcase; document it when presenting results.
+universe:
+  - AAPL
+  - MSFT
+  - GOOGL
+  - AMZN
+  - META
+  - NVDA
+  - TSLA
+  - AVGO
+  - JPM
+  - BAC
+  - GS
+  - V
+  - MA
+  - UNH
+  - JNJ
+  - MRK
+  - LLY
+  - PFE
+  - XOM
+  - CVX
+  - COP
+  - PG
+  - KO
+  - PEP
+  - WMT
+  - HD
+  - MCD
+  - CAT
+  - HON
+  - DIS
+
+benchmark: SPY
+start: "2015-01-01"
+end: null            # null = today
+data_cache: data/cache
+report_dir: reports
+
+labeling:
+  vol_span: 50           # EWMA span for daily volatility estimate
+  pt_mult: 2.0           # profit-take barrier = pt_mult * daily_vol
+  sl_mult: 1.0           # stop-loss barrier   = sl_mult * daily_vol
+  max_holding_days: 20   # vertical barrier (trading days)
+  event_every: 10        # re-arm a new event every N days while signal stays on
+
+signals:
+  fast_sma: 50
+  slow_sma: 200
+
+valuation:
+  reporting_lag_days: 60   # fundamentals usable only this many days after period end
+  min_value_rank: 0.4      # trade only stocks in the top 60% of the value score
+
+model:
+  n_estimators: 400
+  max_depth: 6
+  min_prob: 0.55         # meta-model probability threshold to take a trade
+  retrain_freq: 63       # retrain walk-forward every N trading days (~quarterly)
+  min_train_events: 200  # skip trading until this many resolved labels exist
+
+backtest:
+  cost_bps: 10           # round-trip-ish per side cost in basis points on turnover
+  max_gross_exposure: 1.0
+  max_positions: 10
+
+forecast:
+  horizon: 5             # forward return horizon (trading days)
+  seq_len: 30            # LSTM input window length
+  folds: 3               # walk-forward folds
+  test_years: 3.0        # span evaluated out-of-sample
+  # LSTM (scaled up for GPU; shrink on CPU if slow)
+  hidden: 64
+  layers: 2
+  dropout: 0.1
+  epochs: 25
+  batch: 256
+  lr: 0.001
+  patience: 4
+  use_amp: true          # mixed precision on CUDA (no-op on CPU)
+  # linear forecaster
+  linear_model: ridge    # ridge | elasticnet
+  alpha: 1.0
+  l1_ratio: 0.1          # only used by elasticnet
